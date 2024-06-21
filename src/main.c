@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:09:19 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/13 17:13:54 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:27:38 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	argument_error(void)
 {
 	printf("error. program must be runned with at least 4 arguments:\n\
-	-number of philosophers\n\
-	-time before philosopher dies\n\
-	-time each philosopher takes to eat\n\
-	-time each philosopher takes to sleep\n\
-	and one optional argument : number of time each philopher must eat");
+-number of datasophers\n\
+-time before datasopher dies\n\
+-time each datasopher takes to eat\n\
+-time each datasopher takes to sleep\n\
+and one optional argument : number of time each philosopher must eat");
 }
 
 int	check_arguments(int ac, char **av)
@@ -28,9 +28,12 @@ int	check_arguments(int ac, char **av)
 	int	j;
 
 	if (ac > 6 || ac < 5)
-			argument_error();
-	i = 0;
-	while(av[i])
+	{
+		argument_error();
+		return (1);
+	}
+	i = 1;
+	while (av[i])
 	{
 		j = 0;
 		while (av[i][j])
@@ -47,36 +50,26 @@ int	check_arguments(int ac, char **av)
 	return (0);
 }
 
-void	argument_init(char **av, t_philo *philo)
-{
-	philo->nb_philo = ft_atoi(av[1]);
-	philo->time_to_die = ft_atoi(av[2]);
-	philo->time_to_eat = ft_atoi(av[3]);
-	philo->time_to_sleep = ft_atoi(av[4]);
-	if (av[5])
-		philo->nb_times_to_eat = ft_atoi(av[5]);
-	else
-		philo->nb_times_to_eat = 0;
-	philo->fork = malloc(sizeof(int) * philo->nb_philo);
-	return (philo);
-}
-
 int	main(int ac, char **av)
 {
-	t_philo	*philo;
+	t_data	*data;
 
 	if (check_arguments(ac, av) == 1)
 		return (1);
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
+	data = malloc(sizeof(t_data));
+	if (!data)
 	{
-		printf("error. failed to allocate memory for philo struct");
+		printf("error. failed to allocate memory for data struct");
 		return (1);
 	}
-	argument_init(av, philo);
-
-	
-	free(philo->fork);
-	free(philo);
+	init_data(av, data);
+	init_philo(data);
+	init_mutex(data);
+	create_threads(data);
+	is_done_eating_or_dead(data);
+	wait_threads(data);
+	//destroy_mutex(data);
+	free(data->fork);
+	free(data);
 	return (0);
 }
