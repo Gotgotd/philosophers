@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:05:07 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/26 10:55:11 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:58:10 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void		*philo_routine(void *data);
 void		wait_threads(t_data *data);
 
 /* DESTROY */
-void		destroy_mutex(t_data *data);
+void		destroy_and_free(t_data *data);
 
 /* ACTIONS */
 void		philo_eat(t_philo *philo);

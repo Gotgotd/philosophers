@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:09:19 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/26 10:49:15 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:58:10 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,15 @@ int	main(int ac, char **av)
 		hell_is_other_people(data);
 		return (0);
 	}
+	else if (data->nb_philo == 0)
+	{
+		printf("error. there must be at least 1 philosopher\n");
+		return (1);
+	}
 	init_mutex(data);
 	create_threads(data);
 	is_done_eating_or_dead(data);
 	wait_threads(data);
-	destroy_mutex(data);
-	free(data->philo);
-	free(data);
+	destroy_and_free(data);
 	return (0);
 }
