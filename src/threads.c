@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 17:37:04 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/21 15:18:45 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/25 17:46:23 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ void	*philo_routine(void *data)
 	philo = (t_philo *)data;
 	while (!check_stop(philo))
 	{
-		philo_take_fork(philo);
-		if (check_stop(philo))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			pthread_mutex_unlock(philo->right_fork);
-			return (NULL);
-		}
 		philo_eat(philo);
 		if (check_stop(philo))
 			return (NULL);
@@ -45,8 +38,8 @@ void	create_threads(t_data *data)
 	data->start_time = get_current_time();
 	while (i < data->nb_philo)
 	{
-		//printf("philo id : %i\n", data->philo[i].id);
-		pthread_create(&data->philo[i].tid, NULL, philo_routine, &data->philo[i]);
+		pthread_create(&data->philo[i].tid, NULL, philo_routine,
+			&data->philo[i]);
 		i++;
 	}
 }

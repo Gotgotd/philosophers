@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 15:09:19 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/20 17:27:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:49:15 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ int	check_arguments(int ac, char **av)
 	return (0);
 }
 
+void	hell_is_other_people(t_data *data)
+{
+	data->start_time = get_current_time();
+	ft_display(data->philo, "has taken a fork 🍴");
+	usleep(data->time_to_die * 1000);
+	ft_display(data->philo, " died 💀");
+	free(data->fork);
+	free(data->philo);
+	free(data);
+}
+
 int	main(int ac, char **av)
 {
 	t_data	*data;
@@ -58,18 +69,20 @@ int	main(int ac, char **av)
 		return (1);
 	data = malloc(sizeof(t_data));
 	if (!data)
-	{
-		printf("error. failed to allocate memory for data struct");
 		return (1);
+	if (!init_data(av, data) || !init_philo(data))
+		return (1);
+	if (data->nb_philo == 1)
+	{
+		hell_is_other_people(data);
+		return (0);
 	}
-	init_data(av, data);
-	init_philo(data);
 	init_mutex(data);
 	create_threads(data);
 	is_done_eating_or_dead(data);
 	wait_threads(data);
-	//destroy_mutex(data);
-	free(data->fork);
+	destroy_mutex(data);
+	free(data->philo);
 	free(data);
 	return (0);
 }
